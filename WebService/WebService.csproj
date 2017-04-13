@@ -43,6 +43,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.0.2\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -122,6 +126,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AutoMapperConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\LocationController.cs" />
@@ -133,6 +138,10 @@
     <Compile Include="Migrations\201703201048091_V01.01.Designer.cs">
       <DependentUpon>201703201048091_V01.01.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704130703012_V01.02.cs" />
+    <Compile Include="Migrations\201704130703012_V01.02.Designer.cs">
+      <DependentUpon>201704130703012_V01.02.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\FrequentlyOpen.cs" />
@@ -142,6 +151,14 @@
     <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\Typ.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\AddressVM.cs" />
+    <Compile Include="ViewModels\FrequentlyOpenVM.cs" />
+    <Compile Include="ViewModels\Location.cs" />
+    <Compile Include="ViewModels\LocationVM.cs" />
+    <Compile Include="ViewModels\MusicGenreVM.cs" />
+    <Compile Include="ViewModels\OpenHoursExceptionVM.cs" />
+    <Compile Include="ViewModels\RatingVM.cs" />
+    <Compile Include="ViewModels\TypVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -162,6 +179,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201703201048091_V01.01.resx">
       <DependentUpon>201703201048091_V01.01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704130703012_V01.02.resx">
+      <DependentUpon>201704130703012_V01.02.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
