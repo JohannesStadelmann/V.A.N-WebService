@@ -12,6 +12,7 @@ namespace WebService.Models {
         public int LocationID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string PictureURL { get; set; }
         public Address Address { get; set; }
         public Typ Typ { get; set; }
         public List<MusicGenre> MusicGenres { get; set; }
