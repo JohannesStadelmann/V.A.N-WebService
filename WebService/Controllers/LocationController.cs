@@ -26,6 +26,7 @@ namespace WebService.Controllers
             using(var ctx = new VANContext()) {
                 return Mapper.Map<LocationDetailedVM>(ctx.Locations
                     .Include("Address")
+                    .Include("Typ")
                     .Include("MusicGenres")
                     .Include("Ratings")
                     .Include("FrequentlyOpens")
