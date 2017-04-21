@@ -11,7 +11,7 @@ namespace WebService.Models {
         [Key]
         public int FrequentlyOpenID { get; set; }
         public DayOfWeek DayOfWeek { get; set; }
-        public TimeSpan OpeningTime { get; set; }
-        public TimeSpan CloseTime { get; set; }
+        public int OpeningTime { get; set; }
+        public int CloseTime { get; set; }
     }
 }

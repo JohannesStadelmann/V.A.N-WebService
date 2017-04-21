@@ -148,6 +148,14 @@
     <Compile Include="Migrations\201704201423277_V01.03.Designer.cs">
       <DependentUpon>201704201423277_V01.03.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704210753022_V01.04.cs" />
+    <Compile Include="Migrations\201704210753022_V01.04.Designer.cs">
+      <DependentUpon>201704210753022_V01.04.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704210807023_V01.05.cs" />
+    <Compile Include="Migrations\201704210807023_V01.05.Designer.cs">
+      <DependentUpon>201704210807023_V01.05.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\FrequentlyOpen.cs" />
@@ -160,6 +168,7 @@
     <Compile Include="ViewModels\AddressVM.cs" />
     <Compile Include="ViewModels\FrequentlyOpenVM.cs" />
     <Compile Include="ViewModels\LocationDetailedVM.cs" />
+    <Compile Include="ViewModels\LocationSearchVM.cs" />
     <Compile Include="ViewModels\LocationVM.cs" />
     <Compile Include="ViewModels\MusicGenreVM.cs" />
     <Compile Include="ViewModels\OpenHoursExceptionVM.cs" />
@@ -191,6 +200,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704201423277_V01.03.resx">
       <DependentUpon>201704201423277_V01.03.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704210753022_V01.04.resx">
+      <DependentUpon>201704210753022_V01.04.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704210807023_V01.05.resx">
+      <DependentUpon>201704210807023_V01.05.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

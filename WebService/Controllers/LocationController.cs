@@ -33,5 +33,23 @@ namespace WebService.Controllers
                     .SingleOrDefault(x => x.LocationID == id));
             }
         }
+
+        [HttpGet]
+        public IEnumerable<LocationVM> FindByParameters(LocationSearchVM locationSearch)
+        {
+            using(var ctx = new VANContext())
+            {
+                locationSearch.Location = locationSearch.Location == null ? "*" : locationSearch.Location;
+                locationSearch.City = locationSearch.City == null ? "*" : locationSearch.City;
+                locationSearch.MusicGenre = locationSearch.MusicGenre == null ? "*" : locationSearch.MusicGenre;
+                locationSearch.Typ = locationSearch.Typ == null ? "*" : locationSearch.Typ;
+
+
+                return Mapper.Map<IEnumerable<LocationVM>>(ctx.Locations.Include("Address").Include("Typ").Where(x =>
+                            x.Name == locationSearch.Location && 
+                            x.Address.City == locationSearch.City &&
+                            x.Typ.Name == locationSearch.Typ).ToList());
+            }
+        }
     }
 }
