@@ -41,27 +41,58 @@ namespace WebService.Controllers
             using(var ctx = new VANContext())
             {
                 IEnumerable<Location> locations =
-                    ctx.Locations.Include("Address").Include("Typ").Include("MusicGenres").ToList();
+                    ctx.Locations.Include("Address").Include("Typ").Include("MusicGenres").Include("FrequentlyOpens").ToList();
 
                 if (locationSearch.Location != "")
                 {
-                    locations = locations.Where(x => x.Name == locationSearch.Location);
+                    locations = locations.Where(x => x.Name.Contains(locationSearch.Location));
                 }
                 if (locationSearch.City != "")
                 {
-                    locations = locations.Where(x => x.Address.City == locationSearch.City);
+                    locations = locations.Where(x => x.Address.City.Contains(locationSearch.City));
                 }
-                /*
                 if(locationSearch.MusicGenre != "") {
-                    locations = locations.Where(x => x.MusicGenres.Where(y => y.Name == locationSearch.MusicGenre) != null);
+                    locations = locations.Where(x => FindMusicGenre(x.MusicGenres, locationSearch.MusicGenre));
                 }
-                */
                 if(locationSearch.Typ != "") {
-                    locations = locations.Where(x => x.Typ.Name == locationSearch.Typ);
+                    locations = locations.Where(x => x.Typ.Name.Contains(locationSearch.Typ));
                 }
 
-                return Mapper.Map<IEnumerable<LocationVM>>(locations);
+                // Filter open locations if needed
+                List<Location> filteredLocations = locations.ToList();
+                if (locationSearch.IsOpen) {
+                    DateTime currDateTime = DateTime.Now;
+                   
+                    foreach (Location location in locations)
+                    {
+                        FrequentlyOpen open = location.FrequentlyOpens.SingleOrDefault(x => x.DayOfWeek == currDateTime.DayOfWeek);
+                        if (open != null) {
+                            // check if open today (= both > 0)
+                            if (open.OpeningTime > 0 && open.CloseTime > 0) {
+                                int time = (currDateTime.Hour * 100) + currDateTime.Minute;
+                                int closingTime = open.CloseTime <= 400 ? open.CloseTime + 3000 : open.CloseTime;
+                                if (time < open.OpeningTime || time > closingTime) {
+                                    filteredLocations.Remove(location);
+                                }
+                            } else {
+                                filteredLocations.Remove(location);
+                            }
+                        }
+                    }
+                }
+
+                return Mapper.Map<IEnumerable<LocationVM>>(filteredLocations);
             }
+        }
+
+        private bool FindMusicGenre(IEnumerable<MusicGenre> musicGenres, string searchString)
+        {
+            foreach (MusicGenre musicGenre in musicGenres) {
+                if (musicGenre.Name.Contains(searchString)) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
