@@ -16,8 +16,28 @@ namespace WebService.Controllers
 
         [HttpGet]
         public IEnumerable<LocationVM> GetAll() {
-            using (var ctx = new VANContext()) {
-                return Mapper.Map<IEnumerable<LocationVM>>(ctx.Locations.Include("Address").Include("Typ").ToList());
+            using (var ctx = new VANContext())
+            {
+                DateTime currDateTime = DateTime.Now;
+                List<Location> locations = ctx.Locations.Include("Address").Include("Typ").Include("FrequentlyOpens").ToList();
+                List<LocationVM> vmLocations = new List<LocationVM>();
+                foreach (Location location in locations)
+                {
+                    LocationVM vm = Mapper.Map<LocationVM>(location);
+                    FrequentlyOpen open = location.FrequentlyOpens.SingleOrDefault(x => x.DayOfWeek == currDateTime.DayOfWeek);
+                    if (open != null)
+                    {
+                        // check if open today (= both > 0)
+                        if (open.OpeningTime > 0 && open.CloseTime > 0) {
+                            vm.OpenHours = GetFormatedTime(open.OpeningTime) + " - " + GetFormatedTime(open.CloseTime);
+                        } else {
+                            vm.OpenHours = "";
+                        }
+                    }
+                    vmLocations.Add(vm);
+                }
+
+                return vmLocations;
             }
         }
 
@@ -93,6 +113,12 @@ namespace WebService.Controllers
                 }
             }
             return false;
+        }
+
+        private string GetFormatedTime(int time)
+        {
+            return "" + time / 100 + ":" + (time % 100 == 0 ? "00" : "" + time % 100) ;
+            ;
         }
     }
 }

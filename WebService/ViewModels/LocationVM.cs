@@ -8,7 +8,7 @@
         public string PictureURL { get; set; }
         public double GPSLatitude { get; set; }
         public double GPSLongitude { get; set; }
-
+        public string OpenHours { get; set; }
 
     }
 }
