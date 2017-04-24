@@ -35,21 +35,32 @@ namespace WebService.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         public IEnumerable<LocationVM> FindByParameters(LocationSearchVM locationSearch)
         {
             using(var ctx = new VANContext())
             {
-                locationSearch.Location = locationSearch.Location == null ? "*" : locationSearch.Location;
-                locationSearch.City = locationSearch.City == null ? "*" : locationSearch.City;
-                locationSearch.MusicGenre = locationSearch.MusicGenre == null ? "*" : locationSearch.MusicGenre;
-                locationSearch.Typ = locationSearch.Typ == null ? "*" : locationSearch.Typ;
+                IEnumerable<Location> locations =
+                    ctx.Locations.Include("Address").Include("Typ").Include("MusicGenres").ToList();
 
+                if (locationSearch.Location != "")
+                {
+                    locations = locations.Where(x => x.Name == locationSearch.Location);
+                }
+                if (locationSearch.City != "")
+                {
+                    locations = locations.Where(x => x.Address.City == locationSearch.City);
+                }
+                /*
+                if(locationSearch.MusicGenre != "") {
+                    locations = locations.Where(x => x.MusicGenres.Where(y => y.Name == locationSearch.MusicGenre) != null);
+                }
+                */
+                if(locationSearch.Typ != "") {
+                    locations = locations.Where(x => x.Typ.Name == locationSearch.Typ);
+                }
 
-                return Mapper.Map<IEnumerable<LocationVM>>(ctx.Locations.Include("Address").Include("Typ").Where(x =>
-                            x.Name == locationSearch.Location && 
-                            x.Address.City == locationSearch.City &&
-                            x.Typ.Name == locationSearch.Typ).ToList());
+                return Mapper.Map<IEnumerable<LocationVM>>(locations);
             }
         }
     }

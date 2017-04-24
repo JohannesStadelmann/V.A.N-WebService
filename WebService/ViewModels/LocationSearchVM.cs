@@ -10,6 +10,7 @@ namespace WebService.ViewModels {
         public string City { get; set; }
         public string Typ { get; set; }
         public string MusicGenre { get; set; }
+        public bool IsOpen { get; set; }
 
     }
 }
