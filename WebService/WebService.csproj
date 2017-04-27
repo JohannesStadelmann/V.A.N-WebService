@@ -133,6 +133,7 @@
     <Compile Include="Controllers\LocationTypController.cs" />
     <Compile Include="Controllers\MusicGenreController.cs" />
     <Compile Include="Controllers\RatingController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DatabaseContext\VANContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

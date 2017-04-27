@@ -34,6 +34,18 @@ namespace WebService.Controllers
                             vm.OpenHours = "";
                         }
                     }
+
+                    // set overall rating
+                    if (location.Ratings != null)
+                    {
+                        double overall = 0;
+                        foreach (Rating rating in location.Ratings)
+                        {
+                            overall += rating.UserRating;
+                        }
+                        vm.OverAllRating = Math.Round((overall / location.Ratings.Count), 2);
+                    }
+
                     vmLocations.Add(vm);
                 }
 
@@ -68,8 +80,8 @@ namespace WebService.Controllers
                         {
                             overall += rating.UserRating;
                         }
-                        vm.OverAllRating = overall / location.Ratings.Count;
-
+                        vm.OverAllRating = Math.Round((overall / location.Ratings.Count), 2);
+                        
                         vmLocations.Add(vm);
                     }
                 }

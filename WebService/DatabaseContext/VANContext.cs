@@ -20,6 +20,7 @@ namespace WebService.DatabaseContext {
         public DbSet<OpenHoursException> OpenHoursExceptions { get; set; }
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<Typ> Typs { get; set; }
+        public DbSet<User> Users { get; set; }
 
     }
 }

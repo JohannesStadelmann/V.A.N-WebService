@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using AutoMapper;
 using WebService.DatabaseContext;
@@ -39,17 +37,6 @@ namespace WebService.Controllers
                 if (location != null)
                 {
                     return Mapper.Map<IEnumerable<RatingVM>>(location.Ratings.ToList());
-                }
-                return null;
-            }
-        }
-
-        [HttpGet]
-        public IEnumerable<RatingVM> GetTop3ByLocation(int id) {
-            using(var ctx = new VANContext()) {
-                Location location = ctx.Locations.Include("Ratings").SingleOrDefault(x => x.LocationID == id);
-                if(location != null) {
-                    return Mapper.Map<IEnumerable<RatingVM>>(location.Ratings.ToList().OrderBy(x => x.UserRating).Take(3));
                 }
                 return null;
             }
