@@ -117,8 +117,7 @@ namespace WebService.Controllers
 
         private string GetFormatedTime(int time)
         {
-            return "" + time / 100 + ":" + (time % 100 == 0 ? "00" : "" + time % 100) ;
-            ;
+            return "" + time / 100 + ":" + (time % 100 == 0 ? "00" : "" + time % 100);
         }
     }
 }
