@@ -36,7 +36,13 @@ namespace WebService.Controllers
                 Location location = ctx.Locations.Include("Ratings").SingleOrDefault(x => x.LocationID == id);
                 if (location != null)
                 {
-                    return Mapper.Map<IEnumerable<RatingVM>>(location.Ratings.ToList());
+                    List<Rating> ratings = new List<Rating>();
+                    foreach (Rating rating in location.Ratings)
+                    {
+                        ratings.Add(ctx.Ratings.Include("User").SingleOrDefault(x => x.RatingID == rating.RatingID));
+                    }
+
+                    return Mapper.Map<IEnumerable<RatingVM>>(ratings);
                 }
                 return null;
             }
