@@ -12,7 +12,7 @@ namespace WebService.Controllers
 {
     public class UserController : ApiController
     {
-        [HttpGet]
+        [HttpPost]
         public bool Login(UserVM user)
         {
             using (var ctx = new VANContext())
