@@ -9,6 +9,7 @@
         public double GPSLatitude { get; set; }
         public double GPSLongitude { get; set; }
         public string OpenHours { get; set; }
+        public double OverAllRating { get; set; }
 
     }
 }

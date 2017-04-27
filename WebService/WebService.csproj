@@ -132,6 +132,7 @@
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\LocationTypController.cs" />
     <Compile Include="Controllers\MusicGenreController.cs" />
+    <Compile Include="Controllers\RatingController.cs" />
     <Compile Include="DatabaseContext\VANContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -156,6 +157,10 @@
     <Compile Include="Migrations\201704210807023_V01.05.Designer.cs">
       <DependentUpon>201704210807023_V01.05.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704270857018_V01.06.cs" />
+    <Compile Include="Migrations\201704270857018_V01.06.Designer.cs">
+      <DependentUpon>201704270857018_V01.06.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\FrequentlyOpen.cs" />
@@ -164,6 +169,7 @@
     <Compile Include="Models\OpenHoursException.cs" />
     <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\Typ.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AddressVM.cs" />
     <Compile Include="ViewModels\FrequentlyOpenVM.cs" />
@@ -174,6 +180,7 @@
     <Compile Include="ViewModels\OpenHoursExceptionVM.cs" />
     <Compile Include="ViewModels\RatingVM.cs" />
     <Compile Include="ViewModels\TypVM.cs" />
+    <Compile Include="ViewModels\UserVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -206,6 +213,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704210807023_V01.05.resx">
       <DependentUpon>201704210807023_V01.05.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704270857018_V01.06.resx">
+      <DependentUpon>201704270857018_V01.06.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

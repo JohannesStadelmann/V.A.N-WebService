@@ -42,6 +42,43 @@ namespace WebService.Controllers
         }
 
         [HttpGet]
+        public IEnumerable<LocationVM> GetTop10() {
+            using(var ctx = new VANContext()) {
+                DateTime currDateTime = DateTime.Now;
+                List<Location> locations = ctx.Locations.Include("Address").Include("Typ").Include("FrequentlyOpens").Include("Ratings").ToList();
+                List<LocationVM> vmLocations = new List<LocationVM>();
+                foreach(Location location in locations) {
+                    LocationVM vm = Mapper.Map<LocationVM>(location);
+                    FrequentlyOpen open = location.FrequentlyOpens.SingleOrDefault(x => x.DayOfWeek == currDateTime.DayOfWeek);
+                    
+                    // set todays opening hours
+                    if(open != null) {
+                        // check if open today (= both > 0)
+                        if(open.OpeningTime > 0 && open.CloseTime > 0) {
+                            vm.OpenHours = GetFormatedTime(open.OpeningTime) + " - " + GetFormatedTime(open.CloseTime);
+                        } else {
+                            vm.OpenHours = "";
+                        }
+                    }
+
+                    // set overall rating
+                    if(location.Ratings.Count > 5) {
+                        double overall = 0;
+                        foreach (Rating rating in location.Ratings)
+                        {
+                            overall += rating.UserRating;
+                        }
+                        vm.OverAllRating = overall / location.Ratings.Count;
+
+                        vmLocations.Add(vm);
+                    }
+                }
+
+                return vmLocations.OrderBy(x => x.OverAllRating).Take(10);
+            }
+        }
+
+        [HttpGet]
         public LocationDetailedVM GetById(int id) {
             using(var ctx = new VANContext()) {
                 return Mapper.Map<LocationDetailedVM>(ctx.Locations

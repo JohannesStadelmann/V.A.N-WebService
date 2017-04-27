@@ -36,6 +36,9 @@ namespace WebService.App_Start {
                 cfg.CreateMap<Rating, RatingVM>();
                 cfg.CreateMap<RatingVM, Rating>();
 
+                cfg.CreateMap<User, UserVM>();
+                cfg.CreateMap<UserVM, User>();
+
                 cfg.CreateMap<Typ, TypVM>();
                 cfg.CreateMap<TypVM, Typ>();
             });
