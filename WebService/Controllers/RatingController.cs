@@ -47,5 +47,21 @@ namespace WebService.Controllers
                 return null;
             }
         }
+
+        [HttpGet]
+        public IEnumerable<RatingVM> GetTop3ByLocation(int id) {
+            using(var ctx = new VANContext()) {
+                Location location = ctx.Locations.Include("Ratings").SingleOrDefault(x => x.LocationID == id);
+                if(location != null) {
+                    List<Rating> ratings = new List<Rating>();
+                    foreach(Rating rating in location.Ratings) {
+                        ratings.Add(ctx.Ratings.Include("User").SingleOrDefault(x => x.RatingID == rating.RatingID));
+                    }
+                    List<Rating> sortedList = ratings.OrderByDescending(x => x.Date).Take(3).ToList();
+                    return Mapper.Map<IEnumerable<RatingVM>>(sortedList);
+                }
+                return null;
+            }
+        }
     }
 }

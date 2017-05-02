@@ -6,7 +6,7 @@ namespace WebService.ViewModels {
         public string Name { get; set; }
         public string Description { get; set; }
         public string PictureURL { get; set; }
-        public int OverAllRating { get; set; }
+        public double OverAllRating { get; set; }
         public AddressVM Address { get; set; }
         public TypVM Typ { get; set; }
         public List<MusicGenreVM> MusicGenres { get; set; }
