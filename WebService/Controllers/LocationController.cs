@@ -49,8 +49,7 @@ namespace WebService.Controllers {
 
         [HttpGet]
         public LocationDetailedVM GetById(int id) {
-            using(var ctx = new VANContext())
-            {
+            using(var ctx = new VANContext()) {
                 Location location = ctx.Locations.Include("Address")
                     .Include("Typ")
                     .Include("MusicGenres")

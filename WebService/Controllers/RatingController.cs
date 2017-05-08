@@ -7,19 +7,15 @@ using WebService.DatabaseContext;
 using WebService.Models;
 using WebService.ViewModels;
 
-namespace WebService.Controllers
-{
-    public class RatingController : ApiController
-    {
+namespace WebService.Controllers {
+    public class RatingController: ApiController {
         [HttpPost]
-        public bool RateLocation(int id, RatingVM rating)
-        {
-            using (var ctx = new VANContext())
-            {
+        public bool RateLocation(int id, RatingVM rating) {
+            using(var ctx = new VANContext()) {
                 Location location = ctx.Locations.Include("Ratings").SingleOrDefault(x => x.LocationID == id);
-                if (location != null)
-                {
+                if(location != null) {
                     rating.Date = DateTime.Now;
+                    rating.User = Mapper.Map<UserVM>(ctx.Users.SingleOrDefault(x => x.UserId == rating.User.UserId));
                     location.Ratings.Add(Mapper.Map<Rating>(rating));
                     ctx.SaveChanges();
                     return true;
@@ -29,16 +25,12 @@ namespace WebService.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<RatingVM> GetAllByLocation(int id)
-        {
-            using (var ctx = new VANContext())
-            {
+        public IEnumerable<RatingVM> GetAllByLocation(int id) {
+            using(var ctx = new VANContext()) {
                 Location location = ctx.Locations.Include("Ratings").SingleOrDefault(x => x.LocationID == id);
-                if (location != null)
-                {
+                if(location != null) {
                     List<Rating> ratings = new List<Rating>();
-                    foreach (Rating rating in location.Ratings)
-                    {
+                    foreach(Rating rating in location.Ratings) {
                         ratings.Add(ctx.Ratings.Include("User").SingleOrDefault(x => x.RatingID == rating.RatingID));
                     }
 

@@ -9,15 +9,11 @@ using WebService.DatabaseContext;
 using WebService.Models;
 using WebService.ViewModels;
 
-namespace WebService.Controllers
-{
-    public class UserController : ApiController
-    {
+namespace WebService.Controllers {
+    public class UserController: ApiController {
         [HttpPost]
-        public User Login(UserVM user)
-        {
-            using (var ctx = new VANContext())
-            {
+        public User Login(UserVM user) {
+            using(var ctx = new VANContext()) {
                 return ctx.Users.SingleOrDefault(x => x.Username == user.Username && x.Password == user.Password);
             }
         }
@@ -26,14 +22,20 @@ namespace WebService.Controllers
         public UserVM Register(UserVM user) {
             using(var ctx = new VANContext()) {
                 User u = ctx.Users.SingleOrDefault(x => x.Username == user.Username);
-                if(u == null)
-                {
+                if(u == null) {
                     User newUser = Mapper.Map<User>(user);
                     ctx.Users.Add(newUser);
                     ctx.SaveChanges();
                     return Mapper.Map<UserVM>(newUser);
                 }
                 return null;
+            }
+        }
+
+        [HttpGet]
+        public UserVM GetUserById(int id) {
+            using(var ctx = new VANContext()) {
+                return Mapper.Map<UserVM>(ctx.Users.SingleOrDefault(x => x.UserId == id));
             }
         }
     }
