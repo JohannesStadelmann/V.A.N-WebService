@@ -55,10 +55,11 @@ namespace WebService.Controllers {
                     .Include("Typ")
                     .Include("MusicGenres")
                     .Include("Ratings")
+                    .Include("Ratings.User")
                     .Include("FrequentlyOpens")
-                    .Include("OpenHoursExceptions")
                     .SingleOrDefault(x => x.LocationID == id);
-                LocationDetailedVM vm =  Mapper.Map<LocationDetailedVM>(location);
+
+                LocationDetailedVM vm = Mapper.Map<LocationDetailedVM>(location);
                 vm = SetRating(vm, location);
 
                 return vm;
@@ -114,10 +115,10 @@ namespace WebService.Controllers {
                     ctx.Locations.Include("Address").Include("Typ").Include("MusicGenres").Include("FrequentlyOpens").ToList();
 
                 if(locationSearch.Location != "") {
-                    locations = locations.Where(x => x.Name.Contains(locationSearch.Location));
+                    locations = locations.Where(x => x.Name.ToLower().Contains(locationSearch.Location.ToLower()));
                 }
                 if(locationSearch.City != "") {
-                    locations = locations.Where(x => x.Address.City.Contains(locationSearch.City));
+                    locations = locations.Where(x => x.Address.City.ToLower().Contains(locationSearch.City.ToLower()));
                 }
                 if(locationSearch.MusicGenre != "") {
                     locations = locations.Where(x => FindMusicGenre(x.MusicGenres, locationSearch.MusicGenre));
