@@ -19,7 +19,6 @@ namespace WebService.Controllers {
                 if(location != null) {
                     r.Date = DateTime.Now;
                     ctx.Entry(r.User).State = EntityState.Unchanged;
-                    
                     location.Ratings.Add(r);
                     ctx.SaveChanges();
                     return true;
