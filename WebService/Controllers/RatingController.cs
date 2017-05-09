@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
 using AutoMapper;
@@ -10,13 +11,16 @@ using WebService.ViewModels;
 namespace WebService.Controllers {
     public class RatingController: ApiController {
         [HttpPost]
-        public bool RateLocation(int id, RatingVM rating) {
+        public bool RateLocation(int id, RatingVM rating)
+        {
+            Rating r = Mapper.Map<Rating>(rating);
             using(var ctx = new VANContext()) {
                 Location location = ctx.Locations.Include("Ratings").Include("Ratings.User").SingleOrDefault(x => x.LocationID == id);
                 if(location != null) {
-                    rating.Date = DateTime.Now;
-                    //rating.User = Mapper.Map<UserVM>(ctx.Users.SingleOrDefault(x => x.UserId == rating.User.UserId));
-                    location.Ratings.Add(Mapper.Map<Rating>(rating));
+                    r.Date = DateTime.Now;
+                    ctx.Entry(r.User).State = EntityState.Unchanged;
+                    
+                    location.Ratings.Add(r);
                     ctx.SaveChanges();
                     return true;
                 }
