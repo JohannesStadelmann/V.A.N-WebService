@@ -12,10 +12,10 @@ namespace WebService.Controllers {
         [HttpPost]
         public bool RateLocation(int id, RatingVM rating) {
             using(var ctx = new VANContext()) {
-                Location location = ctx.Locations.Include("Ratings").SingleOrDefault(x => x.LocationID == id);
+                Location location = ctx.Locations.Include("Ratings").Include("Ratings.User").SingleOrDefault(x => x.LocationID == id);
                 if(location != null) {
                     rating.Date = DateTime.Now;
-                    rating.User = Mapper.Map<UserVM>(ctx.Users.SingleOrDefault(x => x.UserId == rating.User.UserId));
+                    //rating.User = Mapper.Map<UserVM>(ctx.Users.SingleOrDefault(x => x.UserId == rating.User.UserId));
                     location.Ratings.Add(Mapper.Map<Rating>(rating));
                     ctx.SaveChanges();
                     return true;
