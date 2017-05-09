@@ -18,6 +18,7 @@ namespace WebService.Controllers {
                 if(location != null) {
                     Rating existingRating = location.Ratings.SingleOrDefault(x => x.User.UserId == rating.User.UserId);
                     if(existingRating != null) {
+                        existingRating.UserRating = rating.UserRating;
                         existingRating.Comment = rating.Comment;
                         existingRating.Date = DateTime.Now;
                         ctx.SaveChanges();
