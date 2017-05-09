@@ -11,19 +11,26 @@ using WebService.ViewModels;
 namespace WebService.Controllers {
     public class RatingController: ApiController {
         [HttpPost]
-        public bool RateLocation(int id, RatingVM rating)
-        {
+        public String RateLocation(int id, RatingVM rating) {
             Rating r = Mapper.Map<Rating>(rating);
             using(var ctx = new VANContext()) {
                 Location location = ctx.Locations.Include("Ratings").Include("Ratings.User").SingleOrDefault(x => x.LocationID == id);
                 if(location != null) {
-                    r.Date = DateTime.Now;
-                    ctx.Entry(r.User).State = EntityState.Unchanged;
-                    location.Ratings.Add(r);
-                    ctx.SaveChanges();
-                    return true;
+                    Rating existingRating = location.Ratings.SingleOrDefault(x => x.User.UserId == rating.User.UserId);
+                    if(existingRating != null) {
+                        existingRating.Comment = rating.Comment;
+                        existingRating.Date = DateTime.Now;
+                        ctx.SaveChanges();
+                        return "Changed";
+                    } else {
+                        r.Date = DateTime.Now;
+                        ctx.Entry(r.User).State = EntityState.Unchanged;
+                        location.Ratings.Add(r);
+                        ctx.SaveChanges();
+                        return "Created";
+                    }
                 }
-                return false;
+                return "Error";
             }
         }
 
