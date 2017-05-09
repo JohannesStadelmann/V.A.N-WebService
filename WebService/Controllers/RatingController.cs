@@ -10,6 +10,7 @@ using WebService.ViewModels;
 
 namespace WebService.Controllers {
     public class RatingController: ApiController {
+
         [HttpPost]
         public String RateLocation(int id, RatingVM rating) {
             Rating r = Mapper.Map<Rating>(rating);
