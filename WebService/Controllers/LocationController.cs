@@ -148,7 +148,16 @@ namespace WebService.Controllers {
                     }
                 }
 
-                return Mapper.Map<IEnumerable<LocationVM>>(filteredLocations);
+                //set opening hour of today
+                List<LocationVM> vmLocations = new List<LocationVM>();
+                foreach(Location location in filteredLocations) {
+                    LocationVM vm = Mapper.Map<LocationVM>(location);
+                    vm = SetOpeningHours(vm, location);
+                    vm = SetRating(vm, location);
+                    vmLocations.Add(vm);
+                }
+
+                return vmLocations;
             }
         }
 

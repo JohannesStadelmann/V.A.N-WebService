@@ -22,7 +22,7 @@ namespace WebService.Controllers {
                         location.Ratings.Remove(existingRating);
                         ctx.SaveChanges();
                         r.Date = DateTime.Now;
-                        ctx.Entry(r.User).State = EntityState.Unchanged;
+                        r.User = ctx.Users.SingleOrDefault(x => x.UserId == r.User.UserId);
                         location.Ratings.Add(r);
                         ctx.SaveChanges();
                         return "Changed";
