@@ -17,10 +17,13 @@ namespace WebService.Controllers {
                 Location location = ctx.Locations.Include("Ratings").Include("Ratings.User").SingleOrDefault(x => x.LocationID == id);
                 if(location != null) {
                     Rating existingRating = location.Ratings.SingleOrDefault(x => x.User.UserId == rating.User.UserId);
-                    if(existingRating != null) {
-                        existingRating.UserRating = rating.UserRating;
-                        existingRating.Comment = rating.Comment;
-                        existingRating.Date = DateTime.Now;
+                    if(existingRating != null)
+                    {
+                        location.Ratings.Remove(existingRating);
+                        ctx.SaveChanges();
+                        r.Date = DateTime.Now;
+                        ctx.Entry(r.User).State = EntityState.Unchanged;
+                        location.Ratings.Add(r);
                         ctx.SaveChanges();
                         return "Changed";
                     } else {
