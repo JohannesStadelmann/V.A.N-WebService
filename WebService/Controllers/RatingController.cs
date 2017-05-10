@@ -15,25 +15,33 @@ namespace WebService.Controllers {
         public String RateLocation(int id, RatingVM rating) {
             Rating r = Mapper.Map<Rating>(rating);
             using(var ctx = new VANContext()) {
-                Location location = ctx.Locations.Include("Ratings").Include("Ratings.User").SingleOrDefault(x => x.LocationID == id);
-                if(location != null) {
-                    Rating existingRating = location.Ratings.SingleOrDefault(x => x.User.UserId == rating.User.UserId);
-                    if(existingRating != null)
-                    {
-                        location.Ratings.Remove(existingRating);
-                        ctx.SaveChanges();
-                        r.Date = DateTime.Now;
-                        r.User = ctx.Users.SingleOrDefault(x => x.UserId == r.User.UserId);
-                        location.Ratings.Add(r);
-                        ctx.SaveChanges();
-                        return "Changed";
-                    } else {
-                        r.Date = DateTime.Now;
-                        ctx.Entry(r.User).State = EntityState.Unchanged;
-                        location.Ratings.Add(r);
-                        ctx.SaveChanges();
-                        return "Created";
+                User user = ctx.Users.SingleOrDefault(x => x.Username == rating.User.Username && x.Password == rating.User.Password);
+                if(user != null) {
+                    Location location =
+                        ctx.Locations.Include("Ratings")
+                            .Include("Ratings.User")
+                            .SingleOrDefault(x => x.LocationID == id);
+                    if(location != null) {
+                        Rating existingRating =
+                            location.Ratings.SingleOrDefault(x => x.User.UserId == rating.User.UserId);
+                        if(existingRating != null) {
+                            location.Ratings.Remove(existingRating);
+                            ctx.SaveChanges();
+                            r.Date = DateTime.Now;
+                            r.User = ctx.Users.SingleOrDefault(x => x.UserId == r.User.UserId);
+                            location.Ratings.Add(r);
+                            ctx.SaveChanges();
+                            return "Changed";
+                        } else {
+                            r.Date = DateTime.Now;
+                            ctx.Entry(r.User).State = EntityState.Unchanged;
+                            location.Ratings.Add(r);
+                            ctx.SaveChanges();
+                            return "Created";
+                        }
                     }
+                } else {
+                    return "Unauthorized";
                 }
                 return "Error";
             }

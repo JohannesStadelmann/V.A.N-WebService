@@ -126,31 +126,9 @@ namespace WebService.Controllers {
                     locations = locations.Where(x => x.Typ.Name.Contains(locationSearch.Typ));
                 }
 
-                // Filter open locations if needed
-                List<Location> filteredLocations = locations.ToList();
-                if(locationSearch.IsOpen) {
-                    DateTime currDateTime = DateTime.Now;
-
-                    foreach(Location location in locations) {
-                        FrequentlyOpen open = location.FrequentlyOpens.SingleOrDefault(x => x.DayOfWeek == currDateTime.DayOfWeek);
-                        if(open != null) {
-                            // check if open today (= both > 0)
-                            if(open.OpeningTime > 0 && open.CloseTime > 0) {
-                                int time = (currDateTime.Hour * 100) + currDateTime.Minute;
-                                int closingTime = open.CloseTime <= 400 ? open.CloseTime + 3000 : open.CloseTime;
-                                if(time < open.OpeningTime || time > closingTime) {
-                                    filteredLocations.Remove(location);
-                                }
-                            } else {
-                                filteredLocations.Remove(location);
-                            }
-                        }
-                    }
-                }
-
                 //set opening hour of today
                 List<LocationVM> vmLocations = new List<LocationVM>();
-                foreach(Location location in filteredLocations) {
+                foreach(Location location in locations) {
                     LocationVM vm = Mapper.Map<LocationVM>(location);
                     vm = SetOpeningHours(vm, location);
                     vm = SetRating(vm, location);
