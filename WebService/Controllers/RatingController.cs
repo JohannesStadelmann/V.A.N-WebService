@@ -26,6 +26,7 @@ namespace WebService.Controllers {
                             location.Ratings.SingleOrDefault(x => x.User.UserId == rating.User.UserId);
                         if(existingRating != null) {
                             location.Ratings.Remove(existingRating);
+                            ctx.Entry(user).State = EntityState.Unchanged;
                             ctx.SaveChanges();
                             r.Date = DateTime.Now;
                             r.User = ctx.Users.SingleOrDefault(x => x.UserId == r.User.UserId);
@@ -34,7 +35,8 @@ namespace WebService.Controllers {
                             return "Changed";
                         } else {
                             r.Date = DateTime.Now;
-                            ctx.Entry(r.User).State = EntityState.Unchanged;
+                            ctx.Entry(user).State = EntityState.Unchanged;
+                            //ctx.Entry(r.User).State = EntityState.Unchanged;
                             location.Ratings.Add(r);
                             ctx.SaveChanges();
                             return "Created";
