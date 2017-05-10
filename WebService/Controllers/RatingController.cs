@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
+using System.Web.UI.WebControls;
 using AutoMapper;
 using WebService.DatabaseContext;
 using WebService.Models;
@@ -16,7 +17,9 @@ namespace WebService.Controllers {
             Rating r = Mapper.Map<Rating>(rating);
             using(var ctx = new VANContext()) {
                 User user = ctx.Users.SingleOrDefault(x => x.Username == rating.User.Username && x.Password == rating.User.Password);
-                if(user != null) {
+                if(user != null)
+                {
+                    r.User = user;
                     Location location =
                         ctx.Locations.Include("Ratings")
                             .Include("Ratings.User")
@@ -35,8 +38,8 @@ namespace WebService.Controllers {
                             return "Changed";
                         } else {
                             r.Date = DateTime.Now;
-                            ctx.Entry(user).State = EntityState.Unchanged;
-                            //ctx.Entry(r.User).State = EntityState.Unchanged;
+                            //ctx.Entry(user).State = EntityState.Unchanged;
+                            ctx.Entry(r.User).State = EntityState.Unchanged;
                             location.Ratings.Add(r);
                             ctx.SaveChanges();
                             return "Created";
